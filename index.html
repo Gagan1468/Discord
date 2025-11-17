@@ -1,432 +1,235 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Nova AI Systems — SPA</title>
-<meta name="description" content="Nova AI Systems — single page app with animated transitions" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nova AI Systems</title>
 <style>
-  /* ---------- base/reset ---------- */
-  :root{
-    --bg:#080b14; --card:rgba(255,255,255,0.04); --muted:#bfcbe3;
-    --accent1:#ff5f8a; --accent2:#7f4bff;
-    --glass: rgba(255,255,255,0.03);
-    --ease: cubic-bezier(.2,.9,.3,1);
-  }
-  *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial}
-  html,body{height:100%;background:var(--bg);color:#eaf0ff;overflow-x:hidden}
-  a{color:inherit;text-decoration:none}
-  .container{max-width:1200px;margin:0 auto;padding:0 20px;}
-
-/* ---------- header/nav ---------- */
-  header{
-    position:fixed;top:0;left:0;right:0;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;
-    background:linear-gradient(180deg, rgba(6,10,18,0.58), rgba(6,10,18,0.42));
-    backdrop-filter:blur(12px);
-    border-bottom:1px solid rgba(255,255,255,0.04);
-    z-index:1200;
-  }
-  .brand{display:flex;gap:12px;align-items:center}
-  .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;color:#071024;font-weight:800;box-shadow:0 10px 28px rgba(127,75,255,0.12)}
-  nav.desktop{display:flex;gap:18px;align-items:center}
-  nav.desktop a{padding:8px 10px;border-radius:8px;color:var(--muted);font-size:15px;transition:all 180ms var(--ease)}
-  nav.desktop a:hover{color:#fff;transform:translateY(-2px)}
-  nav.desktop a.active{color:#fff;background:linear-gradient(90deg,var(--accent2),var(--accent1));box-shadow:0 8px 30px rgba(127,75,255,0.08)}
-  .cta{padding:8px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent2),var(--accent1));color:#061427;font-weight:700}
-
-  .menu-btn{display:none;background:none;border:0;color:#eaf0ff;font-size:26px;cursor:pointer;padding:6px;border-radius:8px}
-  .menu-btn:focus{outline:2px solid rgba(127,75,255,0.16);outline-offset:3px}
-
-/* ---------- page layout & sections ---------- */
-  main{padding-top:92px;min-height:100vh}
-  .view{
-    min-height:calc(100vh - 92px);
-    padding:48px 0 80px 0;
-    position:relative;
-    overflow:hidden;
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
   }
 
-  .page{
-    max-width:1200px;margin:0 auto;
-    padding:18px;
-    border-radius:12px;
-    background:transparent;
-    transform-origin:center;
+  body {
+    background: #080b14;
+    color: white;
+    overflow-x: hidden;
   }
 
-/* ---------- transitions between views ---------- */
-  .route {
-    position:absolute;left:0;right:0;top:0;
-    will-change:opacity,transform;
-    transition: opacity 420ms var(--ease), transform 420ms var(--ease);
-    opacity:0; pointer-events:none; transform:translateY(18px) scale(.995);
-  }
-  .route.active { opacity:1; pointer-events:auto; transform:translateY(0) scale(1); }
-
-/* ---------- hero ---------- */
-  .hero{
-    height:72vh; min-height:420px; display:flex;align-items:center; justify-content:space-between; gap:28px;
-  }
-  .hero-left{flex:1;max-width:740px}
-  .kicker{display:inline-block;padding:8px 12px;border-radius:999px;background:var(--glass);color:var(--muted);font-size:13px;margin-bottom:18px}
-  h1{font-size:44px;line-height:1.02;margin-bottom:14px}
-  p.lead{color:var(--muted);font-size:16px;margin-bottom:22px;max-width:58ch}
-  .hero-cta{display:flex;gap:12px;align-items:center}
-
-/* preview card */
-  .preview{width:420px; padding:20px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); box-shadow:0 10px 40px rgba(2,6,23,0.6); border:1px solid rgba(255,255,255,0.03)}
-  .logos{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
-  .logos img{width:56px;height:24px;object-fit:contain;border-radius:6px;filter:grayscale(.08)}
-
-/* ---------- features grid ---------- */
-  .features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}
-  .feature{background:var(--card);padding:18px;border-radius:12px;transition:transform 300ms var(--ease);cursor:default}
-  .feature:hover{transform:translateY(-6px)}
-
-/* ---------- content util ---------- */
-  .muted{color:var(--muted)}
-  .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.03);font-size:13px}
-
-/* ---------- mobile ---------- */
-  @media (max-width:900px){ .features{grid-template-columns:repeat(2,1fr)} .hero{flex-direction:column;align-items:flex-start} .preview{width:100%} }
-  @media (max-width:720px){
-    .menu-btn{display:block}
-    nav.desktop{display:none}
-    header{padding:10px 14px}
-    .container{padding:0 12px}
-    .hero-left{width:100%}
-    .features{grid-template-columns:1fr}
+  /* HEADER */
+  header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 18px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(10, 14, 25, 0.55);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    z-index: 1000;
+    transition: 0.35s;
   }
 
-/* ---------- reduced motion ---------- */
-  @media (prefers-reduced-motion: reduce){
-    .route, .feature, .preview { transition: none !important; transform:none !important; }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
   }
 
-  /* small helpers */
-  .center{display:flex;align-items:center;gap:12px}
-  .micro{font-size:13px;color:var(--muted)}
-  .backlink{display:inline-block;margin-top:20px;color:var(--muted)}
+  .logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #ff5f8a, #7f4bff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 20px;
+  }
+
+  nav {
+    display: flex;
+    gap: 28px;
+  }
+
+  nav a {
+    text-decoration: none;
+    color: #dfe6f3;
+    opacity: 0.75;
+    transition: 0.3s;
+    font-size: 15px;
+  }
+
+  nav a:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+
+  .cta {
+    padding: 10px 20px;
+    background: #7f4bff;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: 0.3s;
+  }
+
+  .cta:hover {
+    background: #9a68ff;
+  }
+
+  .menu-btn {
+    display: none;
+    font-size: 28px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
+
+  /* HERO */
+  .hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    background: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d') center/cover no-repeat;
+  }
+
+  .hero h1 {
+    font-size: 52px;
+    font-weight: 800;
+    opacity: 0;
+    animation: rise 1.2s ease-out forwards;
+  }
+
+  .hero p {
+    max-width: 600px;
+    margin-top: 18px;
+    font-size: 18px;
+    opacity: 0;
+    animation: rise 1.2s ease-out forwards 0.3s;
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(25px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* FEATURES */
+  .features {
+    padding: 120px 60px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 40px;
+  }
+
+  .card {
+    background: rgba(255,255,255,0.05);
+    padding: 30px;
+    border-radius: 14px;
+    transition: 0.35s;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .card:hover {
+    transform: translateY(-6px);
+    background: rgba(255,255,255,0.08);
+  }
+
+  .show {
+    animation: fadeIn 0.8s forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity:0; transform: translateY(20px); }
+    to { opacity:1; transform: translateY(0); }
+  }
+
+  /* MOBILE */
+  @media (max-width: 760px) {
+    .menu-btn { display: block; }
+
+    nav {
+      position: absolute;
+      top: 70px;
+      left: 0;
+      width: 100%;
+      padding: 22px 0;
+      background: rgba(10, 14, 25, 0.95);
+      backdrop-filter: blur(12px);
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      display: none;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    nav.show { display: flex; animation: drop 0.35s ease-out; }
+
+    @keyframes drop {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  }
 </style>
 </head>
 <body>
-  <header>
-    <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
-      <div class="brand center">
-        <div class="logo">N</div>
-        <div style="line-height:1">
-          <div style="font-weight:700">Nova AI Systems</div>
-          <div class="micro">Future Intelligence</div>
-        </div>
-      </div>
-
-      <nav class="desktop" role="navigation" aria-label="Primary nav">
-        <a href="#/" data-route="/" class="nav-link active">Home</a>
-        <a href="#/solutions" data-route="/solutions" class="nav-link">Solutions</a>
-        <a href="#/models" data-route="/models" class="nav-link">Models</a>
-        <a href="#/docs" data-route="/docs" class="nav-link">Docs</a>
-        <a href="#/pricing" data-route="/pricing" class="nav-link">Pricing</a>
-        <a href="#/app" data-route="/app" class="cta nav-link">Launch App</a>
-      </nav>
-
-      <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+<header>
+  <div class="brand">
+    <div class="logo">N</div>
+    <div>
+      <div style="font-weight:700">Nova AI Systems</div>
+      <div style="opacity:0.6; font-size:12px;">Future Intelligence</div>
     </div>
+  </div>
 
-    <!-- mobile nav (in DOM for toggling) -->
-    <nav id="mobileNav" aria-hidden="true" style="display:none;position:fixed;left:0;right:0;top:72px;z-index:1100;padding:18px;background:linear-gradient(180deg,rgba(6,10,18,0.96),rgba(6,10,18,0.94));backdrop-filter:blur(10px);border-top:1px solid rgba(255,255,255,0.03)">
-      <div class="container" style="display:flex;flex-direction:column;gap:6px;">
-        <a href="#/" data-route="/" class="mobile-link">Home</a>
-        <a href="#/solutions" data-route="/solutions" class="mobile-link">Solutions</a>
-        <a href="#/models" data-route="/models" class="mobile-link">Models</a>
-        <a href="#/docs" data-route="/docs" class="mobile-link">Docs</a>
-        <a href="#/pricing" data-route="/pricing" class="mobile-link">Pricing</a>
-        <a href="#/app" data-route="/app" class="cta mobile-link" style="margin-top:8px">Launch App</a>
-      </div>
-    </nav>
-  </header>
+  <button class="menu-btn" onclick="toggleMenu()">☰</button>
 
-  <main>
-    <div class="view container" id="viewRoot">
+  <nav id="menu">
+    <a href="solutions.html">Solutions</a>
+    <a href="models.html">Models</a>
+    <a href="docs.html">Docs</a>
+    <a href="pricing.html">Pricing</a>
+    <a class="cta" href="app.html">Launch App</a>
+  </nav>
+</header>
 
-      <!-- HOME -->
-      <section id="home" class="route active" aria-labelledby="homeTitle" tabindex="-1">
-        <div class="page">
-          <div class="hero" role="region" aria-label="Intro">
-            <div class="hero-left">
-              <div class="kicker">Platform · Website Insights · Brand Analytics</div>
-              <h1 id="homeTitle">AI That Thinks Ahead</h1>
-              <p class="lead muted">Next-generation intelligence built for creators, developers, and fast-moving teams ready to shape the future.</p>
-              <div class="hero-cta" style="margin-top:18px">
-                <a class="cta" href="#/app" data-route="/app">Launch App</a>
-                <a href="#/docs" data-route="/docs" class="pill">Docs</a>
-              </div>
+<section class="hero">
+  <h1>AI That Thinks Ahead</h1>
+  <p>Next-generation intelligence built for creators, developers, and teams shaping the future.</p>
+</section>
 
-              <div style="margin-top:26px" class="muted micro">Trusted by teams worldwide — low-latency, privacy-first.</div>
-
-              <div style="margin-top:28px" class="features" aria-hidden>
-                <div class="feature">⚡ Real-time Insights Engine</div>
-                <div class="feature">🔍 Cognitive Search Models</div>
-                <div class="feature">🎛️ Adaptive Neural Workflow</div>
-              </div>
-            </div>
-
-            <aside class="preview" aria-hidden>
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-                <div class="micro muted">Overview snapshot</div>
-                <div class="pill">Live</div>
-              </div>
-
-              <div class="logos" aria-hidden>
-                <img src="https://via.placeholder.com/80x28?text=Gemini" alt="">
-                <img src="https://via.placeholder.com/80x28?text=ChatGPT" alt="">
-                <img src="https://via.placeholder.com/80x28?text=Claude" alt="">
-              </div>
-
-              <div style="margin-top:12px">
-                <div style="display:flex;gap:12px">
-                  <div style="flex:1">
-                    <div class="micro muted">Visibility</div>
-                    <div style="font-weight:800;font-size:20px">48</div>
-                  </div>
-                  <div style="flex:1">
-                    <div class="micro muted">Sentiment</div>
-                    <div style="font-weight:800;font-size:20px">81</div>
-                  </div>
-                </div>
-                <div class="micro muted" style="margin-top:12px">Top mention: "best office chairs" · Position #2</div>
-              </div>
-            </aside>
-          </div>
-        </div>
-      </section>
-
-      <!-- SOLUTIONS -->
-      <section id="solutions" class="route" aria-labelledby="solutionsTitle" tabindex="-1">
-        <div class="page">
-          <h2 id="solutionsTitle">Solutions</h2>
-          <p class="muted" style="margin-top:8px">Products and integrations for teams needing real-time AI signals.</p>
-
-          <div style="margin-top:22px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">
-            <div class="feature">Brand Monitoring · Real-time alerts</div>
-            <div class="feature">AI Search Optimization · SERP for generative engines</div>
-            <div class="feature">Product-level Tracking · SKU analytics</div>
-            <div class="feature">Enterprise Connectors · Warehouse & Slack</div>
-          </div>
-
-          <a class="backlink" href="#/" data-route="/">← Back to home</a>
-        </div>
-      </section>
-
-      <!-- MODELS -->
-      <section id="models" class="route" aria-labelledby="modelsTitle" tabindex="-1">
-        <div class="page">
-          <h2 id="modelsTitle">Models</h2>
-          <p class="muted" style="margin-top:8px">Our stack: ensemble retrieval + small efficient LLMs for realtime answers.</p>
-
-          <div style="margin-top:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">
-            <div class="feature">Retrieval-as-a-Service</div>
-            <div class="feature">Contextual Rerankers</div>
-            <div class="feature">Confidence Signals & Attribution</div>
-          </div>
-
-          <a class="backlink" href="#/" data-route="/">← Back to home</a>
-        </div>
-      </section>
-
-      <!-- DOCS -->
-      <section id="docs" class="route" aria-labelledby="docsTitle" tabindex="-1">
-        <div class="page">
-          <h2 id="docsTitle">Docs</h2>
-          <p class="muted" style="margin-top:8px">Start integrating Nova — endpoints, SDKs and example flows.</p>
-
-          <div style="margin-top:18px">
-            <pre style="background:rgba(255,255,255,0.02);padding:14px;border-radius:8px;font-size:13px;overflow:auto">
-curl -X POST https://api.nova.ai/v1/query \
- -H "Authorization: Bearer YOUR_KEY" \
- -d '{"q":"best office chair for back pain"}'
-            </pre>
-          </div>
-
-          <a class="backlink" href="#/" data-route="/">← Back to home</a>
-        </div>
-      </section>
-
-      <!-- PRICING -->
-      <section id="pricing" class="route" aria-labelledby="pricingTitle" tabindex="-1">
-        <div class="page">
-          <h2 id="pricingTitle">Pricing</h2>
-          <p class="muted" style="margin-top:8px">Simple predictable plans — scale as you grow.</p>
-
-          <div style="display:flex;gap:12px;margin-top:18px;flex-wrap:wrap">
-            <div class="feature" style="min-width:220px">Starter — Free tier</div>
-            <div class="feature" style="min-width:220px">Team — $99 / month</div>
-            <div class="feature" style="min-width:220px">Enterprise — Contact us</div>
-          </div>
-
-          <a class="backlink" href="#/" data-route="/">← Back to home</a>
-        </div>
-      </section>
-
-      <!-- APP (Dashboard placeholder) -->
-      <section id="app" class="route" aria-labelledby="appTitle" tabindex="-1">
-        <div class="page">
-          <h2 id="appTitle">Nova App</h2>
-          <p class="muted" style="margin-top:8px">Your dashboard and account controls — (demo placeholder)</p>
-
-          <div style="margin-top:18px" class="feature">Sign in to view dashboards, alerts, and exports.</div>
-
-          <a class="backlink" href="#/" data-route="/">← Back to home</a>
-        </div>
-      </section>
-
-    </div>
-  </main>
+<section class="features">
+  <div class="card">⚡ Real-time Insights Engine</div>
+  <div class="card">🔍 Cognitive Search Models</div>
+  <div class="card">🎛️ Adaptive Neural Workflow</div>
+  <div class="card">🛡️ Secure Edge Deployment</div>
+</section>
 
 <script>
-/* ---------- SPA router + transitions ---------- */
-(function(){
-  const routes = ['/', '/solutions', '/models', '/docs', '/pricing', '/app'];
-  const root = document.getElementById('viewRoot');
-  const navLinks = document.querySelectorAll('[data-route]');
-  const mobileNav = document.getElementById('mobileNav');
-  const menuBtn = document.getElementById('menuBtn');
+function toggleMenu(){
+  document.getElementById("menu").classList.toggle("show");
+}
 
-  // utility: get route from hash like #/solutions or #/
-  function currentRouteFromHash(){
-    const h = location.hash || '#/';
-    const path = h.replace(/^#/, '');
-    return routes.includes(path) ? path : '/';
-  }
-
-  // show specified section with animation
-  function showRoute(path, pushState=true){
-    // focus management & set URL
-    if(pushState) history.pushState({path}, '', '#'+path);
-
-    // hide mobile nav if open
-    hideMobileNav();
-
-    // update nav styles
-    document.querySelectorAll('.nav-link').forEach(a=>{
-      a.classList.toggle('active', a.getAttribute('data-route') === path);
-    });
-
-    // update mobile-link active (no styling but keep ARIA)
-    document.querySelectorAll('.mobile-link').forEach(a=>{
-      a.classList.toggle('active', a.getAttribute('data-route') === path);
-    });
-
-    // find currently active and incoming
-    const current = root.querySelector('.route.active');
-    const incoming = root.querySelector(`.route[id="${path === '/' ? 'home' : path.slice(1)}"]`);
-
-    if(!incoming) return;
-
-    if(current === incoming){
-      // already visible, focus
-      incoming.focus();
-      return;
+// scroll reveal
+const cards = document.querySelectorAll('.card');
+window.addEventListener('scroll', () => {
+  cards.forEach(card => {
+    const rect = card.getBoundingClientRect();
+    if(rect.top < window.innerHeight - 100){
+      card.classList.add('show');
     }
-
-    // transition: fade out current, fade in incoming
-    if(current){
-      current.classList.remove('active');
-      // allow it to animate out (CSS takes care)
-    }
-    // small delay to allow smoother crossfade feel
-    setTimeout(()=>{
-      incoming.classList.add('active');
-      incoming.focus();
-      // scroll top of view
-      window.scrollTo({top:0,behavior:'smooth'});
-      // trigger reveal animations inside (cards)
-      triggerReveal(incoming);
-    }, 30);
-  }
-
-  // map hash -> show route on load/popstate
-  function initRouting(){
-    // link clicks (internal)
-    navLinks.forEach(a=>{
-      a.addEventListener('click', (e)=>{
-        const path = a.getAttribute('data-route');
-        // if it's same route, just close mobile nav
-        if(path === currentRouteFromHash()) { hideMobileNav(); return; }
-        e.preventDefault();
-        showRoute(path, true);
-      });
-    });
-
-    // handle back/forward
-    window.addEventListener('popstate', ()=> {
-      const path = currentRouteFromHash();
-      showRoute(path, false);
-    });
-
-    // initial route
-    const initPath = currentRouteFromHash();
-    showRoute(initPath, false);
-  }
-
-  /* ---------- mobile nav toggles ---------- */
-  function showMobileNav(){
-    mobileNav.style.display = 'block';
-    mobileNav.setAttribute('aria-hidden','false');
-    document.body.style.overflow = 'hidden';
-  }
-  function hideMobileNav(){
-    if(mobileNav) { mobileNav.style.display = 'none'; mobileNav.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; }
-  }
-  menuBtn && menuBtn.addEventListener('click', ()=>{
-    const visible = mobileNav.style.display === 'block';
-    visible ? hideMobileNav() : showMobileNav();
   });
-  // close when tapping mobile links
-  document.querySelectorAll('#mobileNav [data-route]').forEach(a=>{
-    a.addEventListener('click', (e)=>{
-      e.preventDefault();
-      const path = a.getAttribute('data-route');
-      showRoute(path, true);
-      hideMobileNav();
-    });
-  });
-
-  /* ---------- scroll reveal inside sections ---------- */
-  function triggerReveal(section){
-    // reveal .feature elements inside section
-    const items = section.querySelectorAll('.feature');
-    items.forEach((it, idx)=>{
-      it.style.opacity = 0;
-      it.style.transform = 'translateY(16px)';
-      setTimeout(()=>{
-        it.style.transition = 'opacity 520ms var(--ease), transform 520ms var(--ease)';
-        it.style.opacity = 1;
-        it.style.transform = 'translateY(0)';
-      }, 100 + idx * 80);
-    });
-  }
-
-  // lazy reveal on scroll for currently active route
-  function scrollRevealHandler(){
-    document.querySelectorAll('.feature').forEach(el=>{
-      const rect = el.getBoundingClientRect();
-      if(rect.top < window.innerHeight - 80){
-        el.classList.add('visible');
-      }
-    });
-  }
-  window.addEventListener('scroll', scrollRevealHandler, {passive:true});
-
-  // keyboard navigation for links (accessibility)
-  document.addEventListener('keyup', (e)=>{
-    if(e.key === 'Escape') hideMobileNav();
-  });
-
-  // init
-  initRouting();
-  // initial reveal for home features
-  triggerReveal(document.querySelector('.route.active'));
-})();
+});
 </script>
 </body>
 </html>
