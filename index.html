@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Meridian-like — AI Search Insights</title>
+  <meta name="description" content="A sample landing page inspired by an AI search insights product." />
+  <style>
+    /* Reset-ish */
+    * {box-sizing: border-box; margin:0; padding:0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
+    html,body{height:100%;}
+    a{color:inherit; text-decoration:none}
+
+    :root{
+      --bg:#0f1724;        /* dark navy */
+      --card:#0b1220;
+      --muted:#9aa6b2;
+      --accent:#7c5cff;
+      --glass: rgba(255,255,255,0.04);
+    }
+
+    body{
+      background: linear-gradient(180deg,#071025 0%, #061427 60%), var(--bg);
+      color:#e6eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:28px;
+    }
+
+    /* layout */
+    .container{max-width:1200px;margin:0 auto;}
+    header{display:flex;align-items:center;justify-content:space-between;padding:14px 0;}
+    .brand{display:flex;gap:12px;align-items:center;}
+    .logo{
+      width:40px;height:40px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#3ec1ff);display:flex;align-items:center;justify-content:center;font-weight:700;
+      box-shadow:0 6px 20px rgba(124,92,255,0.15);
+    }
+    nav{display:flex;gap:18px;align-items:center;font-size:15px;color:var(--muted)}
+    .cta{display:inline-flex;gap:8px;align-items:center;padding:8px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent),#5bd3ff);color:#071024;font-weight:600}
+
+    /* hero */
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:38px;padding:40px 0;align-items:center;}
+    .kicker{display:inline-block;padding:6px 10px;border-radius:999px;background:var(--glass);color:var(--muted);font-size:13px;margin-bottom:18px}
+    h1{font-size:38px;line-height:1.05;margin-bottom:14px}
+    p.lead{color:var(--muted);font-size:16px;margin-bottom:22px;max-width:58ch}
+    .hero-actions{display:flex;gap:12px}
+
+    /* right column card -- analytics preview */
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:14px;padding:18px;box-shadow:0 6px 30px rgba(2,6,23,0.6); border:1px solid rgba(255,255,255,0.03)
+    }
+    .logos{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+    .logos img{width:48px;height:24px;object-fit:contain;filter:grayscale(.1);opacity:.95}
+
+    .metric-row{display:flex;gap:12px;flex-wrap:wrap}
+    .metric{
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.0));
+      padding:12px;border-radius:10px;flex:1;min-width:120px;
+    }
+    .metric h3{font-size:13px;color:var(--muted);font-weight:600;margin-bottom:8px}
+    .metric .big{font-size:20px;font-weight:700}
+
+    /* features */
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:36px 0}
+    .feature{background:var(--card);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
+    .feature h4{margin-bottom:8px}
+    .feature p{color:var(--muted);font-size:14px}
+
+    /* testimonials / usecases */
+    .insights{display:flex;gap:18px;margin-top:10px}
+    .insight{flex:1;padding:16px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
+    .insight .title{font-size:13px;color:var(--muted);margin-bottom:8px}
+
+    footer{margin-top:44px;padding:26px 0;border-top:1px solid rgba(255,255,255,0.02);color:var(--muted);display:flex;justify-content:space-between;align-items:center;font-size:14px}
+
+    /* responsive */
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr;}
+      .features{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:600px){
+      header{flex-direction:column;align-items:flex-start;gap:12px}
+      .features{grid-template-columns:1fr}
+    }
+
+    /* small utility */
+    .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.03);font-size:13px}
+    .muted{color:var(--muted)}
+    .micro{font-size:12px;color:var(--muted)}
+    .tag{font-weight:600;font-size:12px;padding:6px 8px;border-radius:8px;background:rgba(124,92,255,0.12);display:inline-block}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">M</div>
+        <div>
+          <div style="font-weight:700">Meridian Labs</div>
+          <div class="micro muted">AI Search Insights</div>
+        </div>
+      </div>
+
+      <nav>
+        <a href="#platform">Platform</a>
+        <a href="#product">Product</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#blog">Blog</a>
+        <a class="cta" href="#demo">Get a demo</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <div class="kicker">Platform · Website Insights · Brand Analytics</div>
+          <h1>Win your market with intelligent search analytics</h1>
+          <p class="lead">See what AI search engines are saying about your brand, discover opportunities to improve, and act faster than competitors. Unified analytics for generative search, chat assistants, and SERP signals.</p>
+          <div class="hero-actions">
+            <a class="cta" href="#demo">Request demo</a>
+            <a class="pill" href="#docs">Explore docs</a>
+          </div>
+
+          <div style="margin-top:28px">
+            <div class="tag">Trusted by product teams</div>
+            <div style="height:12px"></div>
+            <div class="muted micro">Used to track AI answers across Gemini, ChatGPT, Claude, and more.</div>
+          </div>
+
+          <div style="margin-top:26px">
+            <div class="insights">
+              <div class="insight">
+                <div class="title">Visibility</div>
+                <div style="font-weight:800;font-size:18px">60</div>
+                <div class="micro muted">+3% last 7 days</div>
+              </div>
+              <div class="insight">
+                <div class="title">Sentiment</div>
+                <div style="font-weight:800;font-size:18px">86</div>
+                <div class="micro muted">+5% since last month</div>
+              </div>
+              <div class="insight">
+                <div class="title">Position</div>
+                <div style="font-weight:800;font-size:18px">#2</div>
+                <div class="micro muted">Top queries tracked</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside>
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+              <div class="micro muted">Overview snapshot</div>
+              <div class="pill">Live</div>
+            </div>
+
+            <div class="logos" aria-hidden>
+              <!-- placeholders; replace with real logos -->
+              <img src="https://via.placeholder.com/80x28?text=Gemini" alt="logo">
+              <img src="https://via.placeholder.com/80x28?text=ChatGPT" alt="logo">
+              <img src="https://via.placeholder.com/80x28?text=Claude" alt="logo">
+              <img src="https://via.placeholder.com/80x28?text=Perplexity" alt="logo">
+            </div>
+
+            <div class="metric-row" style="margin-top:12px">
+              <div class="metric">
+                <h3>Visibility</h3>
+                <div class="big">48</div>
+                <div class="micro muted">+4% week</div>
+              </div>
+              <div class="metric">
+                <h3>Sentiment</h3>
+                <div class="big">81</div>
+                <div class="micro muted">+2% week</div>
+              </div>
+            </div>
+
+            <div style="margin-top:14px" class="micro muted">Top mention: "best office chairs" · Position #2</div>
+          </div>
+        </aside>
+      </section>
+
+      <section id="platform" style="margin-top:8px">
+        <h2 style="margin-bottom:12px">What it does</h2>
+        <div class="features">
+          <div class="feature">
+            <h4>Cross-AI Monitoring</h4>
+            <p>Track how multiple AI models respond to queries about your brand or product and compare outputs side-by-side.</p>
+          </div>
+          <div class="feature">
+            <h4>Actionable Signals</h4>
+            <p>See concrete improvement actions — content gaps, query rewrites, and ranking signals you can act on right away.</p>
+          </div>
+          <div class="feature">
+            <h4>Custom Alerts</h4>
+            <p>Get notified when sentiment drops, visibility changes, or new queries appear for your product category.</p>
+          </div>
+          <div class="feature">
+            <h4>Product-level Tracking</h4>
+            <p>Monitor SKUs, landing pages, and product descriptions to understand how AI recommends your items.</p>
+          </div>
+          <div class="feature">
+            <h4>Privacy-first</h4>
+            <p>We store only aggregated signals and give you tools to scrub PII before analysis.</p>
+          </div>
+          <div class="feature">
+            <h4>Integrations</h4>
+            <p>Export to Slack, Notion, or your analytics warehouse with one click.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="product" style="margin-top:12px">
+        <h2 style="margin-bottom:12px">Use cases</h2>
+        <div style="display:flex;gap:14px;flex-wrap:wrap">
+          <div style="flex:1;min-width:220px" class="card">
+            <strong>Brand health</strong>
+            <p class="micro muted" style="margin-top:8px">Monitor sentiment and surface risky statements generated by chat assistants.</p>
+          </div>
+          <div style="flex:1;min-width:220px" class="card">
+            <strong>SEO for AI</strong>
+            <p class="micro muted" style="margin-top:8px">Optimize content to appear in generative answers and AI-powered SERPs.</p>
+          </div>
+          <div style="flex:1;min-width:220px" class="card">
+            <strong>Competitive tracking</strong>
+            <p class="micro muted" style="margin-top:8px">See which competitors AI recommends for the same queries.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>
+      <div>© <strong>Meridian Labs</strong> — Built for product & growth teams</div>
+      <div style="display:flex;gap:12px;align-items:center">
+        <a class="micro muted" href="#privacy">Privacy</a>
+        <a class="micro muted" href="#terms">Terms</a>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    // small interactive nicety: fake live numbers update
+    (function(){
+      const bigs = document.querySelectorAll('.insight .big');
+      if(!bigs.length) return;
+      setInterval(()=>{
+        bigs.forEach((el, i)=>{
+          // keep numbers believable
+          let base = parseInt(el.textContent) || 40 + i*20;
+          let delta = Math.floor((Math.random()*5)-2);
+          let next = Math.max(1, base + delta);
+          el.textContent = next;
+        });
+      }, 3000);
+    })();
+  </script>
+</body>
+</html>
