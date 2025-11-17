@@ -6,52 +6,66 @@
   <title>Meridian-like — AI Search Insights</title>
   <meta name="description" content="A sample landing page inspired by an AI search insights product." />
   <style>
-    /* Reset-ish */
+    /* =========================
+       Base / Reset
+       ========================= */
     * {box-sizing: border-box; margin:0; padding:0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
     html,body{height:100%;}
     a{color:inherit; text-decoration:none}
-
     :root{
       --bg:#0f1724;        /* dark navy */
       --card:#0b1220;
       --muted:#9aa6b2;
       --accent:#7c5cff;
+      --accent-2:#3ec1ff;
       --glass: rgba(255,255,255,0.04);
+      --glass-2: rgba(255,255,255,0.03);
+      --transition-fast: 180ms;
+      --transition-md: 350ms;
+      --transition-slow: 700ms;
     }
 
     body{
-      background: linear-gradient(180deg,#071025 0%, #061427 60%), var(--bg);
+      background: radial-gradient(1200px 600px at 10% 5%, rgba(124,92,255,0.06), transparent 6%),
+                  linear-gradient(180deg,#071025 0%, #061427 60%), var(--bg);
       color:#e6eef6;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
       padding:28px;
+      overflow-x:hidden;
     }
 
-    /* layout */
-    .container{max-width:1200px;margin:0 auto;}
-    header{display:flex;align-items:center;justify-content:space-between;padding:14px 0;}
+    .container{max-width:1200px;margin:0 auto;position:relative;z-index:1;}
+    header{display:flex;align-items:center;justify-content:space-between;padding:14px 0;position:relative;z-index:8;}
     .brand{display:flex;gap:12px;align-items:center;}
     .logo{
-      width:40px;height:40px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#3ec1ff);display:flex;align-items:center;justify-content:center;font-weight:700;
-      box-shadow:0 6px 20px rgba(124,92,255,0.15);
+      width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:800;
+      box-shadow:0 10px 30px rgba(124,92,255,0.14);
+      color:#061427;
+      font-size:20px;
     }
-    nav{display:flex;gap:18px;align-items:center;font-size:15px;color:var(--muted)}
-    .cta{display:inline-flex;gap:8px;align-items:center;padding:8px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent),#5bd3ff);color:#071024;font-weight:600}
+    nav{display:flex;gap:18px;align-items:center;font-size:15px;color:var(--muted);transition:opacity var(--transition-fast) ease;}
+    .cta{display:inline-flex;gap:8px;align-items:center;padding:8px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#071024;font-weight:700;box-shadow:0 6px 18px rgba(60,120,255,0.08)}
+    .cta:active{transform:translateY(1px)}
 
-    /* hero */
-    .hero{display:grid;grid-template-columns:1fr 420px;gap:38px;padding:40px 0;align-items:center;}
+    /* Hero layout */
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:38px;padding:40px 0;align-items:center;position:relative;z-index:2;}
     .kicker{display:inline-block;padding:6px 10px;border-radius:999px;background:var(--glass);color:var(--muted);font-size:13px;margin-bottom:18px}
-    h1{font-size:38px;line-height:1.05;margin-bottom:14px}
+    h1{font-size:40px;line-height:1.03;margin-bottom:14px;letter-spacing:-0.2px}
     p.lead{color:var(--muted);font-size:16px;margin-bottom:22px;max-width:58ch}
     .hero-actions{display:flex;gap:12px}
 
-    /* right column card -- analytics preview */
+    /* cards */
     .card{
       background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:14px;padding:18px;box-shadow:0 6px 30px rgba(2,6,23,0.6); border:1px solid rgba(255,255,255,0.03)
+      border-radius:14px;padding:18px;box-shadow:0 8px 40px rgba(2,6,23,0.6); border:1px solid rgba(255,255,255,0.03);
+      transition:transform var(--transition-md), box-shadow var(--transition-md);
     }
+    .card.hover-float { will-change: transform; }
+    .card.hover-float:hover { transform: translateY(-6px); box-shadow:0 18px 60px rgba(2,6,23,0.75); }
+
     .logos{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-    .logos img{width:48px;height:24px;object-fit:contain;filter:grayscale(.1);opacity:.95}
+    .logos img{width:56px;height:24px;object-fit:contain;filter:grayscale(.08);opacity:.95;border-radius:6px}
 
     .metric-row{display:flex;gap:12px;flex-wrap:wrap}
     .metric{
@@ -63,7 +77,8 @@
 
     /* features */
     .features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:36px 0}
-    .feature{background:var(--card);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
+    .feature{background:var(--card);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);transition:transform var(--transition-md)}
+    .feature:hover{transform:translateY(-6px)}
     .feature h4{margin-bottom:8px}
     .feature p{color:var(--muted);font-size:14px}
 
@@ -74,113 +89,160 @@
 
     footer{margin-top:44px;padding:26px 0;border-top:1px solid rgba(255,255,255,0.02);color:var(--muted);display:flex;justify-content:space-between;align-items:center;font-size:14px}
 
-    /* responsive */
-    @media (max-width:980px){
-      .hero{grid-template-columns:1fr;}
-      .features{grid-template-columns:repeat(2,1fr)}
-    }
-    @media (max-width:600px){
-      header{flex-direction:column;align-items:flex-start;gap:12px}
-      .features{grid-template-columns:1fr}
-    }
-
-    /* small utility */
+    /* utilities */
     .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.03);font-size:13px}
     .muted{color:var(--muted)}
     .micro{font-size:12px;color:var(--muted)}
     .tag{font-weight:600;font-size:12px;padding:6px 8px;border-radius:8px;background:rgba(124,92,255,0.12);display:inline-block}
 
+    /* =========================
+       Mobile Navbar
+       ========================= */
+    .menu-btn {
+      display:none;
+      font-size:26px;
+      background:none;
+      border:none;
+      color:white;
+      cursor:pointer;
+      padding:8px;
+      border-radius:8px;
+      transition:background var(--transition-fast);
+    }
+    .menu-btn:active{transform:scale(.98)}
+    #mobileNav { display:flex; gap:18px; align-items:center; }
 
-    /* Mobile menu button */
-.menu-btn {
-  display:none;
-  font-size:26px;
-  background:none;
-  border:none;
-  color:white;
-  cursor:pointer;
-}
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr;}
+      .features{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:760px){
+      .menu-btn { display:block; background:transparent; }
+      header { flex-direction:row; justify-content:space-between; align-items:center; }
 
-/* Mobile nav hidden by default */
-#mobileNav {
-  display:flex;
-  gap:18px;
-  align-items:center;
-}
+      /* hide desktop nav */
+      nav.desktop { display:none; }
 
-/* Mobile settings */
-@media (max-width:760px){
-  .menu-btn {
-    display:block;
-  }
-  header {
-    flex-direction:row;
-    justify-content:space-between;
-  }
+      /* slide-down mobile nav */
+      #mobileNav {
+        position:fixed;
+        top:68px;
+        left:0;
+        width:100%;
+        background:linear-gradient(180deg, rgba(6,10,18,0.96), rgba(6,10,18,0.94));
+        backdrop-filter: blur(12px);
+        flex-direction:column;
+        padding:6px 10px;
+        display:flex;
+        gap:0;
+        border-top:1px solid rgba(255,255,255,0.05);
+        transform:translateY(-12px);
+        opacity:0;
+        pointer-events:none;
+        transition:transform 420ms cubic-bezier(.25,.8,.25,1), opacity 340ms ease;
+        box-shadow:0 12px 40px rgba(2,6,23,0.6);
+      }
 
-  /* hide nav initially */
-  #mobileNav {
-    position:absolute;
-    top:70px;
-    left:0;
-    width:100%;
-    background:rgba(15,23,36,0.98);
-    flex-direction:column;
-    padding:20px 0;
-    display:none;
-    border-top:1px solid rgba(255,255,255,0.05);
-  }
+      #mobileNav a { padding:14px 16px; font-size:17px; width:100%; text-align:left; border-radius:8px; color: #e6eef6; }
+      #mobileNav a:not(.cta){ border-bottom:1px solid rgba(255,255,255,0.02); }
 
-  #mobileNav a {
-    padding:12px 0;
-    font-size:18px;
-  }
+      #mobileNav.show {
+        transform:translateY(0);
+        opacity:1;
+        pointer-events:auto;
+      }
+    }
 
-  #mobileNav.show {
-    display:flex;
-  }
-}
+    /* Desktop nav tweak (separate element) */
+    nav.desktop { display:flex; gap:18px; align-items:center; }
 
+    /* =========================
+       Smooth motion / Reveal
+       ========================= */
+    .fade-up { opacity:0; transform: translateY(22px); transition:opacity var(--transition-slow) cubic-bezier(.25,.8,.25,1), transform var(--transition-slow) cubic-bezier(.25,.8,.25,1); }
+    .fade-in { opacity:0; transition:opacity var(--transition-slow) ease-out; }
+    .show-anim { opacity:1 !important; transform: translateY(0) !important; }
+
+    .hover-float { transition: all var(--transition-md) cubic-bezier(.2,.9,.3,1); }
+    .hover-float:hover { transform: translateY(-6px) scale(1.002); }
+
+    .glassy { backdrop-filter: blur(14px); background: rgba(255,255,255,0.035) !important; transition: all var(--transition-md) ease; border:1px solid rgba(255,255,255,0.03); }
+
+    /* subtle animated gradient behind hero for life */
+    .hero-bg {
+      position:absolute; inset:0; pointer-events:none; z-index:0;
+      background: radial-gradient(600px 300px at 78% 12%, rgba(62,193,255,0.06), transparent 8%),
+                  radial-gradient(420px 220px at 12% 28%, rgba(124,92,255,0.05), transparent 8%);
+      transition: transform 1400ms linear;
+      filter: blur(14px);
+      mix-blend-mode:screen;
+      opacity:0.9;
+    }
+
+    /* small helper for accessible focus */
+    a:focus, button:focus { outline:2px solid rgba(124,92,255,0.18); outline-offset:2px; border-radius:6px; }
+
+    /* small responsive tweaks */
+    @media (max-width:420px){
+      body{padding:18px;}
+      h1{font-size:28px}
+    }
   </style>
 </head>
 <body>
+  <div class="hero-bg" aria-hidden></div>
   <div class="container">
+    <!-- =========================
+         Header w/ mobile nav button
+         ========================= -->
     <header>
-  <div class="brand">
-    <div class="logo">M</div>
-    <div>
-      <div style="font-weight:700">Meridian Labs</div>
-      <div class="micro muted">AI Search Insights</div>
-    </div>
-  </div>
-
-  <!-- Mobile menu button -->
-  <button class="menu-btn" onclick="toggleMenu()">
-    ☰
-  </button>
-
-  <nav id="mobileNav">
-    <a href="#platform">Platform</a>
-    <a href="#product">Product</a>
-    <a href="#pricing">Pricing</a>
-    <a href="#blog">Blog</a>
-    <a class="cta" href="#demo">Get a demo</a>
-  </nav>
-</header>
-
-
-    <main>
-      <section class="hero">
+      <div class="brand" aria-hidden>
+        <div class="logo">M</div>
         <div>
-          <div class="kicker">Platform · Website Insights · Brand Analytics</div>
-          <h1>Win your market with intelligent search analytics</h1>
-          <p class="lead">See what AI search engines are saying about your brand, discover opportunities to improve, and act faster than competitors. Unified analytics for generative search, chat assistants, and SERP signals.</p>
-          <div class="hero-actions">
+          <div style="font-weight:700">Meridian Labs</div>
+          <div class="micro muted">AI Search Insights</div>
+        </div>
+      </div>
+
+      <!-- Desktop nav -->
+      <nav class="desktop" role="navigation" aria-label="Primary">
+        <a href="#platform">Platform</a>
+        <a href="#product">Product</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#blog">Blog</a>
+        <a class="cta" href="#demo">Get a demo</a>
+      </nav>
+
+      <!-- Mobile button -->
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mobileNav" aria-label="Open menu">☰</button>
+      </div>
+
+      <!-- Mobile nav (hidden on desktop) -->
+      <nav id="mobileNav" role="navigation" aria-label="Mobile primary" class="fade-in" aria-hidden="true">
+        <a href="#platform" class="mobile-link">Platform</a>
+        <a href="#product" class="mobile-link">Product</a>
+        <a href="#pricing" class="mobile-link">Pricing</a>
+        <a href="#blog" class="mobile-link">Blog</a>
+        <a class="cta mobile-link" href="#demo" style="margin:10px">Get a demo</a>
+      </nav>
+    </header>
+
+    <!-- =========================
+         Main content
+         ========================= -->
+    <main>
+      <section class="hero" id="hero">
+        <div>
+          <div class="kicker fade-up">Platform · Website Insights · Brand Analytics</div>
+          <h1 class="fade-up">Win your market with intelligent search analytics</h1>
+          <p class="lead fade-up">See what AI search engines are saying about your brand, discover opportunities to improve, and act faster than competitors. Unified analytics for generative search, chat assistants, and SERP signals.</p>
+          <div class="hero-actions fade-up">
             <a class="cta" href="#demo">Request demo</a>
             <a class="pill" href="#docs">Explore docs</a>
           </div>
 
-          <div style="margin-top:28px">
+          <div style="margin-top:28px" class="fade-up">
             <div class="tag">Trusted by product teams</div>
             <div style="height:12px"></div>
             <div class="muted micro">Used to track AI answers across Gemini, ChatGPT, Claude, and more.</div>
@@ -188,19 +250,19 @@
 
           <div style="margin-top:26px">
             <div class="insights">
-              <div class="insight">
+              <div class="insight fade-up hover-float">
                 <div class="title">Visibility</div>
-                <div style="font-weight:800;font-size:18px">60</div>
+                <div style="font-weight:800;font-size:18px" class="big live-num">60</div>
                 <div class="micro muted">+3% last 7 days</div>
               </div>
-              <div class="insight">
+              <div class="insight fade-up hover-float">
                 <div class="title">Sentiment</div>
-                <div style="font-weight:800;font-size:18px">86</div>
+                <div style="font-weight:800;font-size:18px" class="big live-num">86</div>
                 <div class="micro muted">+5% since last month</div>
               </div>
-              <div class="insight">
+              <div class="insight fade-up hover-float">
                 <div class="title">Position</div>
-                <div style="font-weight:800;font-size:18px">#2</div>
+                <div style="font-weight:800;font-size:18px" class="big live-num">#2</div>
                 <div class="micro muted">Top queries tracked</div>
               </div>
             </div>
@@ -208,7 +270,7 @@
         </div>
 
         <aside>
-          <div class="card">
+          <div class="card hover-float fade-up">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
               <div class="micro muted">Overview snapshot</div>
               <div class="pill">Live</div>
@@ -241,47 +303,47 @@
       </section>
 
       <section id="platform" style="margin-top:8px">
-        <h2 style="margin-bottom:12px">What it does</h2>
+        <h2 style="margin-bottom:12px" class="fade-up">What it does</h2>
         <div class="features">
-          <div class="feature">
+          <div class="feature fade-up hover-float">
             <h4>Cross-AI Monitoring</h4>
             <p>Track how multiple AI models respond to queries about your brand or product and compare outputs side-by-side.</p>
           </div>
-          <div class="feature">
+          <div class="feature fade-up hover-float">
             <h4>Actionable Signals</h4>
             <p>See concrete improvement actions — content gaps, query rewrites, and ranking signals you can act on right away.</p>
           </div>
-          <div class="feature">
+          <div class="feature fade-up hover-float">
             <h4>Custom Alerts</h4>
             <p>Get notified when sentiment drops, visibility changes, or new queries appear for your product category.</p>
           </div>
-          <div class="feature">
+          <div class="feature fade-up hover-float">
             <h4>Product-level Tracking</h4>
             <p>Monitor SKUs, landing pages, and product descriptions to understand how AI recommends your items.</p>
           </div>
-          <div class="feature">
+          <div class="feature fade-up hover-float">
             <h4>Privacy-first</h4>
             <p>We store only aggregated signals and give you tools to scrub PII before analysis.</p>
           </div>
-          <div class="feature">
+          <div class="feature fade-up hover-float">
             <h4>Integrations</h4>
             <p>Export to Slack, Notion, or your analytics warehouse with one click.</p>
           </div>
         </div>
       </section>
 
-      <section id="product" style="margin-top:12px">
+      <section id="product" style="margin-top:12px" class="fade-up">
         <h2 style="margin-bottom:12px">Use cases</h2>
         <div style="display:flex;gap:14px;flex-wrap:wrap">
-          <div style="flex:1;min-width:220px" class="card">
+          <div style="flex:1;min-width:220px" class="card hover-float">
             <strong>Brand health</strong>
             <p class="micro muted" style="margin-top:8px">Monitor sentiment and surface risky statements generated by chat assistants.</p>
           </div>
-          <div style="flex:1;min-width:220px" class="card">
+          <div style="flex:1;min-width:220px" class="card hover-float">
             <strong>SEO for AI</strong>
             <p class="micro muted" style="margin-top:8px">Optimize content to appear in generative answers and AI-powered SERPs.</p>
           </div>
-          <div style="flex:1;min-width:220px" class="card">
+          <div style="flex:1;min-width:220px" class="card hover-float">
             <strong>Competitive tracking</strong>
             <p class="micro muted" style="margin-top:8px">See which competitors AI recommends for the same queries.</p>
           </div>
@@ -297,30 +359,146 @@
         <a class="micro muted" href="#terms">Terms</a>
       </div>
     </footer>
-
   </div>
 
+  <!-- =========================
+       Scripts: animations + interactions
+       ========================= -->
   <script>
-    // small interactive nicety: fake live numbers update
-    (function(){
-      const bigs = document.querySelectorAll('.insight .big');
-      if(!bigs.length) return;
+    /* ---------------------------
+       Mobile nav toggle
+       --------------------------- */
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileNav = document.getElementById('mobileNav');
+
+    function setMenu(open){
+      if(open){
+        mobileNav.classList.add('show');
+        mobileNav.setAttribute('aria-hidden','false');
+        menuBtn.setAttribute('aria-expanded','true');
+        document.body.style.overflow = 'hidden'; // prevent background scroll
+      } else {
+        mobileNav.classList.remove('show');
+        mobileNav.setAttribute('aria-hidden','true');
+        menuBtn.setAttribute('aria-expanded','false');
+        document.body.style.overflow = '';
+      }
+    }
+
+    menuBtn.addEventListener('click', ()=> {
+      const open = !mobileNav.classList.contains('show');
+      setMenu(open);
+    });
+
+    // close menu when clicking any mobile link
+    document.querySelectorAll('#mobileNav .mobile-link').forEach(a=>{
+      a.addEventListener('click', ()=> setMenu(false));
+    });
+
+    // close on escape
+    window.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape' && mobileNav.classList.contains('show')) setMenu(false);
+    });
+
+    // close mobile nav on resize > mobile
+    let resizeTimer;
+    window.addEventListener('resize', ()=>{
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(()=>{
+        if(window.innerWidth > 760 && mobileNav.classList.contains('show')) setMenu(false);
+      }, 150);
+    });
+
+    /* ---------------------------
+       Fake live numbers (small nicety)
+       --------------------------- */
+    (function fakeLive(){
+      const liveEls = document.querySelectorAll('.live-num');
+      if(!liveEls.length) return;
       setInterval(()=>{
-        bigs.forEach((el, i)=>{
-          // keep numbers believable
-          let base = parseInt(el.textContent) || 40 + i*20;
+        liveEls.forEach((el,i)=>{
+          let txt = el.textContent.replace('#','');
+          let base = parseInt(txt) || (50 + i*10);
           let delta = Math.floor((Math.random()*5)-2);
           let next = Math.max(1, base + delta);
-          el.textContent = next;
+          el.textContent = (i===2) ? `#${next}` : next;
         });
-      }, 3000);
+      }, 2900);
     })();
-  </script>
-  <script>
-function toggleMenu(){
-  document.getElementById("mobileNav").classList.toggle("show");
-}
-</script>
 
+    /* ---------------------------
+       IntersectionObserver: reveal on scroll
+       --------------------------- */
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add('show-anim');
+          // once shown, unobserve to improve perf
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.18 });
+
+    document.querySelectorAll('.fade-up, .fade-in').forEach(el=>{
+      observer.observe(el);
+    });
+
+    // Trigger initial reveal for hero elements after tiny delay (page load polish)
+    window.addEventListener('load', ()=>{
+      setTimeout(()=> {
+        document.querySelectorAll('.fade-up, .fade-in').forEach((el,i)=>{
+          // small stagger for first ~10 items
+          setTimeout(()=> el.classList.add('show-anim'), Math.min(600, i*90));
+        });
+      }, 120);
+    });
+
+    /* ---------------------------
+       Hero parallax (mouse move subtle)
+       --------------------------- */
+    const hero = document.getElementById('hero');
+    const heroBg = document.querySelector('.hero-bg');
+    if(hero && heroBg){
+      hero.addEventListener('mousemove', (e)=>{
+        const rect = hero.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;  // 0..1
+        const y = (e.clientY - rect.top) / rect.height;  // 0..1
+        const tx = (x - 0.5) * 18; // px
+        const ty = (y - 0.5) * 18;
+        heroBg.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
+      });
+      hero.addEventListener('mouseleave', ()=>{
+        heroBg.style.transform = `translate3d(0,0,0)`;
+      });
+    }
+
+    /* ---------------------------
+       Small accessibility: reduce motion respect
+       --------------------------- */
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if(mq.matches){
+      // disable transform heavy animations
+      document.querySelectorAll('.fade-up, .fade-in').forEach(el=>{
+        el.style.transition = 'none';
+        el.classList.add('show-anim');
+      });
+      document.querySelectorAll('.hover-float').forEach(el=>{
+        el.style.transition = 'none';
+      });
+      heroBg.style.transition = 'none';
+    }
+
+    /* ---------------------------
+       Tiny performance: lazy-load placeholder logos (simulate)
+       --------------------------- */
+    // (Left in case you replace placeholders with real images)
+    document.addEventListener('DOMContentLoaded', ()=>{
+      document.querySelectorAll('.logos img').forEach(img=>{
+        if(img.dataset.src){
+          img.src = img.dataset.src;
+        }
+      });
+    });
+  </script>
 </body>
 </html>
