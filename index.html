@@ -57,12 +57,17 @@
     gap: 28px;
   }
 
+  /* 🔥 FIXED NAVBAR HEIGHT — ALL LINKS SAME SIZE */
   nav a {
     text-decoration: none;
     color: #dfe6f3;
     opacity: 0.75;
     transition: 0.3s;
     font-size: 15px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    height: 40px;     /* same height for all items */
   }
 
   nav a:hover {
@@ -71,11 +76,9 @@
   }
 
   .cta {
-    padding: 10px 20px;
     background: #7f4bff;
     border-radius: 6px;
     font-weight: 600;
-    transition: 0.3s;
   }
 
   .cta:hover {
@@ -220,7 +223,6 @@ function toggleMenu(){
   document.getElementById("menu").classList.toggle("show");
 }
 
-// scroll reveal
 const cards = document.querySelectorAll('.card');
 window.addEventListener('scroll', () => {
   cards.forEach(card => {
